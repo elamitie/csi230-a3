@@ -17,16 +17,17 @@
 #define DEFAULT_MAP_WIDTH 50
 #define DEFAULT_MAP_HEIGHT 50
 
-
+static char map[DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT];
 
 typedef struct _driver_status
 {
-	char  curr_char;
-	bool  busy;
-	char  buf[DRV_BUF_SIZE];
-	char* buf_ptr;
-	int   major;
-	int   minor;
+	char   map_buf[DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT];
+	size_t mapsize = DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT;
+	bool   busy;
+	char   buf[DRV_BUF_SIZE];
+	char*  buf_ptr;
+	int    major;
+	int    minor;
 } driver_status_t;
 
 static int device_open(struct inode*, struct file*);
