@@ -42,7 +42,7 @@ compile: $(EXE) $(OBJ)
 register: $(DRIVER)
 	insmod ./$(MODULE)
 	modinfo $(MODULE)
-	lsmod | grep ascii
+	lsmod | grep mapdriver
 	@echo ""
 	@echo "ASCII Character Device Driver has been built and registered."
 	@echo ""
@@ -58,7 +58,7 @@ $(DRIVER): types.h mapdriver.h mapdriver.c
 
 clean-all:
 	make clean
-	rmmod ascii
+	rmmod mapdriver
 	lsmod
 
 # EOF

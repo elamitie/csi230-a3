@@ -16,7 +16,7 @@ int main(argc, argv)
 	if ((fd = open("/dev/asciimap", O_RDWR)) >= 0)
 	{
 		/* do things */
-
+		printf("The driver worked top kek!\n");
 		close(fd);
 	}
 	else

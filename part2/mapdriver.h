@@ -21,8 +21,7 @@ static char map[DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT];
 
 typedef struct _driver_status
 {
-	char   map_buf[DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT];
-	size_t mapsize = DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT;
+	//:char   map_buf[DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT];
 	bool   busy;
 	char   buf[DRV_BUF_SIZE];
 	char*  buf_ptr;

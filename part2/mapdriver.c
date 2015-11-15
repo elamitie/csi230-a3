@@ -2,7 +2,7 @@
 
 static driver_status_t status =
 {
-	'0',   /* Starting ASCII char is '0' */
+//	'0',   /* Starting ASCII char is '0' */
 	false, /* Not busy at the beginning */
 	{0},   /* buffer */
 	NULL,  /* buffer's ptr */
@@ -60,22 +60,33 @@ static int device_release(inode, file)
 	return SUCCESS;
 }
 
-static int device_read(file, buffer, length, offset)
+static ssize_t device_read(file, buffer, length, offset)
 	struct file* file;
 	char*        buffer;
 	size_t       length;
 	loff_t*      offset;
 {
-	 
+	int bytesread = 0;
+
+#ifdef _DEBUG
+	printk
+	(
+		"mapdriver::device_read() - Read %d bytes, %d left\n",
+		bytesread,
+		length
+	);
+#endif
+
+	return bytesread;
 }
 
-static int device_write(file, buffer, length, offset)
+static ssize_t device_write(file, buffer, length, offset)
 	struct file* file;
-	char*        buffer;
+	const char*  buffer;
 	size_t       length;
 	loff_t*      offset;
 {
-
+	return 0; 
 }
 
 int init_module(void)
