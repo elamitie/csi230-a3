@@ -45,6 +45,9 @@ static int device_open(inode, file)
 		"Hello, World\n"
 	);
 	status.buf_ptr = status.buf;
+
+	
+
 	return SUCCESS;
 }
 
@@ -91,6 +94,9 @@ static ssize_t device_write(file, buffer, length, offset)
 
 int init_module(void)
 {
+	char* asciistr;
+	int charlen;
+
 	/* Register the character device (atleast try) */
 	status.major = register_chrdev
 	(
@@ -127,6 +133,26 @@ int init_module(void)
 		DEVICE_NAME,
 		status.major
 	);
+
+	asciistr =       " _____ _     _________  ___   _________           \n"  
+			 "|  ___| |    | ___ \\  \\/  |  |_  | ___ \\          \n"
+			 "| |__ | |    | |_/ / .  . |    | | |_/ /          \n" 
+			 "|  __|| |    |    /| |\\/| |    | | ___ \\          \n" 
+			 "| |___| |____| |\\ \\| |  | |/\\__/ / |_/ /          \n" 
+			 "\\____/\\_____/\\_| \\_\\_|  |_/\\____/\\____/           \n";
+	
+	strcpy(map, asciistr);
+	
+	charlen = strlen(map);
+	for (; charlen < DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT; charlen++)
+	{
+		if (charlen % 50 == 0)
+			map[charlen] = " \n";
+		else
+			map[charlen] = " ";
+	}
+
+	printk(map);
 
 	return SUCCESS;
 }

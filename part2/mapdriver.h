@@ -9,6 +9,7 @@
 #include <linux/fs.h>       /* The character device
                              * definitions are here
                              */
+#include <linux/string.h>
 #include <asm/uaccess.h>  /* for put/get_user */
 
 #define SUCCESS      0
