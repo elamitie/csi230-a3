@@ -3,6 +3,16 @@
 
 Assignment 3 as per the assignment requirements
 
+The shell script uses a function based on the food generation
+of Housenka, the bash game to generate a random map of ascii
+characters, in this case it is filled with blanks and the x
+character.
+
+The C Driver starts as a static map of our initials in ascii
+art, and the driver lets the user call the read(), write(),
+open(), close(), and lseek() system calls to modify the map,
+which is 50 x 50 characters.
+
 # Installation
 
 To "install" the project, make sure git is 
