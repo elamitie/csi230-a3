@@ -10,6 +10,10 @@ installed and clone the repository.
 
 	https://github.com/elamitie/csi230-a3.git
 
+Or if you prefer SSH over HTTPS:
+
+	git@github.com:elamitie/csi230-a3.git
+
 # Building & Running [Shell Script]
 
 Shell script:
