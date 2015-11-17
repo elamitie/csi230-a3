@@ -8,11 +8,11 @@ Assignment 3 as per the assignment requirements
 To "install" the project, make sure git is 
 installed and clone the repository.
 
-	https://github.com/elamitie/csi230-a3.git
+	$git clone https://github.com/elamitie/csi230-a3.git
 
 Or if you prefer SSH over HTTPS:
 
-	git@github.com:elamitie/csi230-a3.git
+	$git clone git@github.com:elamitie/csi230-a3.git
 
 # Building & Running [Shell Script]
 
