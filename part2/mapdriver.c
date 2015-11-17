@@ -1,6 +1,6 @@
 #include "mapdriver.h"
 
-#define _DEBUG 1
+#define _DEBUG
 
 static driver_status_t status =
 {
@@ -64,6 +64,27 @@ static int device_release(inode, file)
 	return SUCCESS;
 }
 
+static loff_t device_lseek(file, offset, origin)
+	struct file* file;
+	loff_t       offset;
+	int          origin;
+{
+	if (offset > strlen(status.mapbuffer))
+		return -EINVAL;
+
+	int newPos;
+	switch(origin)
+	{
+		case SEEK_SET: newPos = 0; break;
+		case SEEK_CUR: newPos = status.curr_pos; break;
+		case SEEK_END: newPos = strlen(status.mapbuffer); break; 	
+	}
+
+	status.curr_pos = newPos + offset;
+		
+	return SUCCESS;
+}
+
 static ssize_t device_read(file, buffer, length, offset)
 	struct file* file;
 	char*        buffer;
@@ -106,6 +127,12 @@ static ssize_t device_write(file, buffer, length, offset)
 		status.mapbuffer[status.curr_pos] = buffer[i];
 		status.curr_pos++;
 		bytes++;
+
+		if (status.curr_pos > DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT)
+		{
+			status.curr_pos--; /* bring the current pos to the end */
+			return -EFBIG;
+		}
 	}
 
 #ifdef _DEBUG
@@ -157,6 +184,10 @@ int init_module(void)
 		DEVICE_NAME,
 		status.major
 	);
+
+	/* This is where we define our static initials map by defining a char*
+	 * and then copying it to a char[]
+	 */
 
 	asciistr =       " _____ _     _________  ___   _________...........\n"  
 			 "|  ___| |    | ___ \\  \\/  |  |_  | ___ \\..........\n"

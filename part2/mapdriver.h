@@ -34,13 +34,14 @@ typedef struct _driver_status
 
 static int device_open(struct inode*, struct file*);
 static int  device_release(struct inode*, struct file*);
+static loff_t device_lseek(struct file*, loff_t, int);
 static ssize_t device_read(struct file*, char*, size_t, loff_t*);
 static ssize_t device_write(struct file*, const char*, size_t, loff_t*);
 
 struct file_operations Fops =
 {
 	NULL,   /* owner */
-	NULL,   /* seek */
+	device_lseek,
 	device_read,
 	device_write,
 	NULL,   /* readdir */

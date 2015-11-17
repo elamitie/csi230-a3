@@ -47,6 +47,22 @@ register: $(DRIVER)
 	@echo "ASCII Character Device Driver has been built and registered."
 	@echo ""
 
+seek-out-of-bounds:
+	make
+	make register
+	./mapdriver-test josh 3000
+
+run:
+	make
+	make register
+	./mapdriver-test
+
+run-mknod:
+	make
+	make register
+	mknod /dev/asciimap c 248 0
+	./mapdriver-test josh
+
 $(EXE): main.o
 	$(CC) main.o -o $(EXE)
 
