@@ -10,7 +10,17 @@ installed and clone the repository.
 
 	https://github.com/elamitie/csi230-a3.git
 
-# Building & Running
+# Building & Running [Shell Script]
+
+Shell script:
+	
+	$./genmap.sh
+
+If the shell script doesn't have permissions:
+
+	$chmod u+x ./genmap.sh
+
+# Building & Running [C Driver]
 
 To build the project:
 
