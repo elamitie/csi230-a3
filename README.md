@@ -1,4 +1,5 @@
-# README Report [ ETHAN RYAN JOSH ]
+# README Report
+	[Ethan Ryan Josh]
 
 Assignment 3 as per the assignment requirements
 
@@ -13,18 +14,18 @@ installed and clone the repository.
 
 To build the project:
 
-$make
+	$make
 
 To register the driver:
 
-$make register
+	$make register
 
 To register the driver, you need to have root
 priviledges on your system.
 
 To run the program:
 
-$./mapdriver-test
+	$./mapdriver-test
 
 Command line arguments are optional and are as follows:
 
@@ -36,25 +37,25 @@ Command line arguments are optional and are as follows:
 The Makefile associated with this project has some targets
 to make building and testing easier.
 
-$make seek-out-of-bounds
+	$make seek-out-of-bounds
 
 This target sets up a test application where the program
 seeks to a position out of bounds of the map, and writes
 a string to wherever the default position is, in this case
 it should be the beginning of the map.
 
-$make run
+	$make run
 
 Just a simple target to combine make, make register, and
 ./mapdriver-test into one command. Make sure you are root
 before executing!
 
-$make run-mknod
+	$make run-mknod
 
 Useful for first time running after booting up the system.
 Otherwise for subsequent runs, use $make run.
 
-$make clean-all
+	$make clean-all
 
 Clean target to remove everything AND unregister the driver.
 If the driver was never registered in the first place, use
