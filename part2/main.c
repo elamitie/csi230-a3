@@ -29,7 +29,6 @@ int main(argc, argv)
 	if ((fd = open("/dev/asciimap", O_RDWR)) >= 0)
 	{
 		/* do things */
-		ascii = "josh"; 	
 		len = strlen(ascii);
 		err = lseek(fd, spos, SEEK_SET);
 		if (err < 0)
