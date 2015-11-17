@@ -1,8 +1,11 @@
 #include "mapdriver.h"
 
+#define _DEBUG 1
+
 static driver_status_t status =
 {
-//	'0',   /* Starting ASCII char is '0' */
+	0,     /* Current index of the buffer */
+	{0},   /* The map buffer */
 	false, /* Not busy at the beginning */
 	{0},   /* buffer */
 	NULL,  /* buffer's ptr */
@@ -46,8 +49,6 @@ static int device_open(inode, file)
 	);
 	status.buf_ptr = status.buf;
 
-	
-
 	return SUCCESS;
 }
 
@@ -70,6 +71,14 @@ static ssize_t device_read(file, buffer, length, offset)
 	loff_t*      offset;
 {
 	int bytesread = 0;
+	
+	while (length > 0)
+	{
+		put_user(status.mapbuffer[bytesread], buffer++);
+		length--;
+		bytesread++;
+		status.curr_pos = bytesread;
+	}
 
 #ifdef _DEBUG
 	printk
@@ -89,13 +98,28 @@ static ssize_t device_write(file, buffer, length, offset)
 	size_t       length;
 	loff_t*      offset;
 {
-	return 0; 
+	size_t bytes = 0;
+	size_t i = 0;
+
+	for(;i < length; i++)
+	{
+		status.mapbuffer[status.curr_pos] = buffer[i];
+		status.curr_pos++;
+		bytes++;
+	}
+
+#ifdef _DEBUG
+	printk("Current Pos: %d, Bytes: %d\n", status.curr_pos, bytes);
+#endif
+
+	return bytes; 
 }
 
 int init_module(void)
 {
 	char* asciistr;
 	int charlen;
+	int i = 1;
 
 	/* Register the character device (atleast try) */
 	status.major = register_chrdev
@@ -134,26 +158,30 @@ int init_module(void)
 		status.major
 	);
 
-	asciistr =       " _____ _     _________  ___   _________           \n"  
-			 "|  ___| |    | ___ \\  \\/  |  |_  | ___ \\          \n"
-			 "| |__ | |    | |_/ / .  . |    | | |_/ /          \n" 
-			 "|  __|| |    |    /| |\\/| |    | | ___ \\          \n" 
-			 "| |___| |____| |\\ \\| |  | |/\\__/ / |_/ /          \n" 
-			 "\\____/\\_____/\\_| \\_\\_|  |_/\\____/\\____/           \n";
+	asciistr =       " _____ _     _________  ___   _________...........\n"  
+			 "|  ___| |    | ___ \\  \\/  |  |_  | ___ \\..........\n"
+			 "| |__ | |    | |_/ / .  . |    | | |_/ /..........\n" 
+			 "|  __|| |    |    /| |\\/| |    | | ___ \\..........\n" 
+			 "| |___| |____| |\\ \\| |  | |/\\__/ / |_/ /..........\n" 
+			 "\\____/\\_____/\\_| \\_\\_|  |_/\\____/\\____/...........\n";
 	
 	strcpy(map, asciistr);
+	status.curr_pos = 0;
 	
 	charlen = strlen(map);
+	charlen -= 6;
+
 	for (; charlen < DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT; charlen++)
 	{
-		if (charlen % 50 == 0)
-			map[charlen] = " \n";
+		if (i % 50 == 0)
+			strcat(map, ".\n");
 		else
-			map[charlen] = " ";
+			strcat(map, ".");
+		i++;
 	}
+	strcat(map, "\n\0");
 
-	printk(map);
-
+	snprintf(status.mapbuffer, sizeof(status.mapbuffer), "%s", map);
 	return SUCCESS;
 }
 

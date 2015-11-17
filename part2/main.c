@@ -11,12 +11,18 @@ int main(argc, argv)
 	char* argv[];
 {
 	char buf[BSIZE];
+	char* ascii;
+	int len;
 	int fd, i, j, n;
 
 	if ((fd = open("/dev/asciimap", O_RDWR)) >= 0)
 	{
 		/* do things */
-		printf("The driver worked top kek!\n");
+		ascii = "josh"; 	
+		len = strlen(ascii);
+		write(fd, ascii, len);
+		n = read(fd, buf, BSIZE);
+		printf(buf);
 		close(fd);
 	}
 	else

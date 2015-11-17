@@ -12,17 +12,19 @@
 #include <linux/string.h>
 #include <asm/uaccess.h>  /* for put/get_user */
 
-#define SUCCESS      0
-#define DRV_BUF_SIZE 80
-#define DEVICE_NAME  "/dev/asciimap"
-#define DEFAULT_MAP_WIDTH 50
+#define SUCCESS    	   0
+#define DRV_BUF_SIZE       80
+#define DEVICE_NAME 	   "/dev/asciimap"
+#define DEFAULT_MAP_WIDTH  50
 #define DEFAULT_MAP_HEIGHT 50
+#define BSIZE              4096
 
-static char map[DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT];
+static char map[(DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT) - 1];
 
 typedef struct _driver_status
 {
-	//:char   map_buf[DEFAULT_MAP_WIDTH * DEFAULT_MAP_HEIGHT];
+	int    curr_pos;
+	char   mapbuffer[BSIZE];
 	bool   busy;
 	char   buf[DRV_BUF_SIZE];
 	char*  buf_ptr;
