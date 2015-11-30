@@ -1,12 +1,16 @@
 #include "mapserver.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 int main(int argc, char** argv)
 {
 	int listenfd = 0, connfd = 0;
 	char* ipaddr = DEFAULT_IP;
-    struct sockaddr_in servaddr;
+	int fd, len, n, err;
+	struct sockaddr_in servaddr;
  
-    char sendBuff[1025];
+    char sendBuff[BSIZE];
     time_t ticks;
 	
 	if (argc == 2)
@@ -15,9 +19,22 @@ int main(int argc, char** argv)
 		ipaddr = argv[1];
 	}
 
-    memset(&servaddr, 0, sizeof(servaddr));
-    memset(sendBuff, 0, sizeof(sendBuff)); 
+	memset(sendBuff, 0, sizeof(sendBuff));
+	
+	/* Load the ascii map into the buffer to send
+	   to the client */
+	fd = open("/dev/asciimap", O_RDWR);
+	if (fd >= 0)
+	{
+		n = read(fd, sendBuff, BSIZE);
+	}
+	else
+	{
+		printf("Error reading from driver, error: %s\n", strerror(errno));
+	}
 
+    memset(&servaddr, 0, sizeof(servaddr));
+	
     servaddr.sin_family = AF_INET;
     servaddr.sin_port = htons(DEFAULT_PORT);
 	inet_aton(ipaddr, &servaddr.sin_addr);
@@ -29,19 +46,14 @@ int main(int argc, char** argv)
     bind(listenfd, (struct sockaddr*)&servaddr, sizeof(servaddr)); 
 
     listen(listenfd, 10);
-
+	
     while(1)
     {
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
 
-        ticks = time(NULL);
-		
-		/* TODO: fill sendBuff with the map data in /dev/asciimap */
-        snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks));
-        write(connfd, sendBuff, strlen(sendBuff)); 
+        write(connfd, sendBuff, strlen(sendBuff));
 
         close(connfd);
         sleep(1);
      }
 }
-

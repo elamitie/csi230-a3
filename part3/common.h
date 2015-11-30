@@ -14,5 +14,6 @@
 
 #define DEFAULT_PORT 23032
 #define DEFAULT_IP "127.0.0.1"
+#define BSIZE 4096
 
 #endif /* COMMON_H */
