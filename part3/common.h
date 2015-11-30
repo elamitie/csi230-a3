@@ -1,3 +1,6 @@
+#ifndef COMMON_H
+#define COMMON_H
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -9,5 +12,7 @@
 #include <sys/types.h>
 #include <time.h>
 
-#define DEFAULT_PORT "23032"
+#define DEFAULT_PORT 23032
 #define DEFAULT_IP "127.0.0.1"
+
+#endif /* COMMON_H */
