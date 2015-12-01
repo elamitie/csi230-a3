@@ -6,7 +6,9 @@ int main(int argc, char** argv)
 	char* ipaddr = DEFAULT_IP;
 	int port = DEFAULT_PORT;
 	char recvBuff[BSIZE];
-    struct sockaddr_in servaddr; 
+    struct sockaddr_in servaddr;
+
+	client_request request;
 
     if(argc == 2)
 	{
@@ -36,19 +38,13 @@ int main(int argc, char** argv)
     {
 		printf("\n Error : Connect Failed %s\n", strerror(errno));
 		return 1;
-    } 
-
-	/*
-    while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
-    {
-        recvBuff[n] = 0;
-        if(fputs(recvBuff, stdout) == EOF)
-        {
-            printf("\n Error : Fputs error\n");
-        }
-	}*/
-
-	n = read(sockfd, recvBuff, sizeof(recvBuff)-1);
+    }
+	
+	char* default_msg = "M 0";
+	/* request a map from the server */
+	write(sockfd, default_msg, strlen(default_msg));
+	
+	n = read(sockfd, recvBuff, sizeof(recvBuff)-1); 
 	if (n >= 0)
 	{
 		printf(recvBuff);
@@ -57,6 +53,10 @@ int main(int argc, char** argv)
 	{
 		printf("Error reading from socket: %s\n", strerror(errno));
 	}
+
+	memset(recvBuff, 0, sizeof(recvBuff)); 
+	n = read(sockfd, recvBuff, sizeof(recvBuff) - 1);
+	printf(recvBuff);
 
     return 0;
 }
