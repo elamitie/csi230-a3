@@ -1,6 +1,6 @@
 # Project: Map Driver & Sockets
 
-Authors: 'Ethan, Ryan, Josh'
+Authors: `Ethan, Ryan, Josh`
 
 This root level README is simply and indication to see the respective parts' folders
 for README's specific to that project regarding building, running, bugs, etc.
